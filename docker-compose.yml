@@ -1,0 +1,32 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  mysql:
+    image: mysql:8.0.28
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - arquisoft
+    volumes:
+      - ./repsql/ondb.sql:/data/application/ondb.sql
+    command: --init-file /data/application/ondb.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=ABCabc123
+  todo:
+    image: todoit:1.0
+    volumes:
+      - C:/logs:/opta/arqui_soft/logs
+    ports:
+      - "8080:8080"
+    networks:
+        - arquisoft
+    environment:
+      - HOST=mysql
+      - PORT=3306
+      - USERNAME=root
+      - PASSWORD=root123
+      - DATABASE=test
+    depends_on:
+      - mysql
+networks:
+  arquisoft:

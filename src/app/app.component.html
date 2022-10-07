@@ -1,0 +1,158 @@
+<nav class="relative |  /54w-full flex flex-wrap+- items-center justify-between py-4 bg-blue-700 text-white  shadow-lgnavbar navbar-expand-lg navbar-light">
+  <div class="container-fluid w-full flex flex-wrap items-center justify-between px-6">
+    <span>TODO APP</span>
+  </div>
+</nav>
+<div class="container mx-auto px-4 sm:px-8 max-w-3xl">
+
+  <div class="mt-5 flex w-full space-x-2"><input [(ngModel)]="description" id="name" type="text"
+      placeholder="Descripcion"
+      class="shadow-lg pl-3 block w-full rounded border-gray-700 text-sm transition focus:border-blue-600 focus:ring-blue-600 hover:border-blue-400 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
+    <button type="button" (click)="saveTodo()"
+      class="shadow-lg inline-flex w-auto shrink-0 cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded border border-gray-200 bg-blue-700 px-3 py-2 text-sm font-medium text-gray-100 transition hover:border-gray-300 hover:bg-blue-500 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
+      ADICIONAR</button>
+  </div>
+  <div class="py-8">
+    <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+      <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+        <table class="min-w-full leading-normal">
+          <thead>
+            <tr>
+              <th scope="col"
+                class="px-5 py-3 bg-blue-400  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Id
+              </th>
+              <th scope="col"
+                class="px-5 py-3 bg-blue-400  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Descripcion
+              </th>
+              <th scope="col"
+                class="px-5 py-3 bg-blue-400  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Fecha de Creacion
+              </th>
+              <th scope="col"
+                class="px-5 py-3 bg-blue-400  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Estado
+              </th>
+              <th class="px-5 py-3 bg-blue-400  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Operaciones
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let todo of todos" >
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{todo.id}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{todo.description}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{todo.createdAt}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <span *ngIf="!todo.status"
+                  class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                  <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
+                  </span>
+                  <span class="relative">
+                    Completa
+                  </span>
+                </span>
+                <span *ngIf="todo.status"
+                  class="relative inline-block px-3 py-1 font-semibold text-orange-400 leading-tight">
+                  <span aria-hidden="true" class="absolute inset-0 bg-orange-200 opacity-50 rounded-full">
+                  </span>
+                  <span class="relative">
+                    Activa
+                  </span>
+                </span>
+              </td>
+              <td  class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <button type="button" (click)="toggleModalUpdate(todo)"  class="shadow-lg inline-flex w-auto shrink-0 cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded border border-gray-200 bg-blue-700 px-3 py-2 text-sm font-medium text-gray-100 transition hover:border-gray-300 hover:bg-blue-500 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                  ✏️</button>
+                  <button type="button" (click)="toggleModalDelete(todo)"  class="shadow-lg inline-flex w-auto shrink-0 cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded border border-gray-200 bg-blue-700 px-3 py-2 text-sm font-medium text-gray-100 transition hover:border-gray-300 hover:bg-blue-500 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                    ❌</button> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalUpdate" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+  <div class="relative w-96 my-6 mx-auto max-w-sm">
+    <!--content-->
+    <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+      <!--header-->
+      <div class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+        <h3 class="text-3xl font-semibold">
+          Editar Tarea
+        </h3>
+        <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" (click)="toggleModalUpdate()">
+          <span class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+            ×
+          </span>
+        </button>
+      </div>
+      <!--body-->
+      <div class="relative p-6 flex-auto">
+        <label class="" for="name">Descripcion</label>
+        <input [(ngModel)]="descriptionEdit" id="name" type="text"
+        placeholder="Descripcion"
+        class="my-2 pl-3 block w-full rounded border-gray-200 text-sm transition focus:border-blue-600 focus:ring-blue-600 hover:border-blue-400 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
+      </div>
+      <!--footer-->
+      <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+        <button class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" (click)="toggleModalUpdate()">
+          Cerrar
+        </button>
+        <button (click)="updateTodo()" class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" (click)="toggleModalUpdate()">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showModalUpdate" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
+
+
+
+<div *ngIf="showModalDelete" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+  <div class="relative w-auto my-6 mx-auto max-w-sm">
+    <!--content-->
+    <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+      <!--header-->
+      <div class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+        <h3 class="text-3xl font-semibold">
+          Eliminar Tarea
+        </h3>
+        <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" (click)="toggleModalDelete()">
+          <span class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+            ×
+          </span>
+        </button>
+      </div>
+      <!--body-->
+      <span class="p-5"> Esta seguro de eliminar el item {{deleteId.description}}</span>
+      <!--footer-->
+      <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+        <button class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" (click)="toggleModalDelete()">
+          Cerrar
+        </button>
+        <button (click)="deleteTodo()" class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" (click)="toggleModalDelete()">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showModalDelete" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
